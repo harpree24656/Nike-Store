@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAR-Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <div class="logo-bar">
+                <a href="index.html"><img src="./images/lastlogo-removebg-preview.png" alt="logo"></a>
+            </div>
+            <div class="options-bar hidden">
+                <a href="index.html">
+                    <h4 class="nav-option">Home</h4>
+                </a>
+                <a href="product.html">
+                    <h4 class="nav-option">Products</h4>
+                </a>
+                <a href="Blogs.html">
+                    <h4 class="nav-option">Blogs</h4>
+                </a>
+                <a href="Contact.html">
+                    <h4 class="nav-option">Contact</h4>
+                </a>
+                <a href="#"><i class="fa-regular fa-circle-xmark cross"></i></a>
+            </div>
+            <div class="menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+        <div class="product1">
+            <div class="product1-img">
+                <img src="./images/nikegreencombo.webp" alt="greencombo">
+            </div>
+            <div class="product1-desc">
+                <h1 class="product1-heading">Nike Air Green & Black Edition</h1>
+                <h4 class="product1-material"> - Premium Mesh, Synthetic Leather, Cushioned Rubber Sole</h4>
+                <p class="product1-para">Step into style with the Nike Air Blue & White Edition.
+                    Designed for comfort and durability, this pair features breathable mesh with smooth synthetic
+                    leather overlays, giving it a lightweight yet supportive feel. The cushioned rubber sole ensures
+                    all-day comfort, while the bold blue and white colorway adds a fresh, sporty vibe to your look.</p>
+                <p class="product1-para">Price : $107 (upto 10% discount)</p>
+                <div class="rating" id="rating">
+                    <span class="star" data-value="1">&#9734;</span>
+                    <span class="star" data-value="2">&#9734;</span>
+                    <span class="star" data-value="3">&#9734;</span>
+                    <span class="star" data-value="4">&#9734;</span>
+                    <span class="star" data-value="5">&#9734;</span>
+                </div>
+                <p id="rating-output"></p>
+                <a href="#checkout-page"><button class="btn-shop product1-btn" id="product1-ach-btn">Buy
+                        Here</button></a>
+            </div>
+        </div>
+        <form class="checkout-page" id="checkout-page">
+            <div class=" anchor-check">
+                <h2 style="color: black; font-weight: 300; transition: 0.2s;">✅ Payment Successfully Done</h2>
+            </div>
+            <h1>Payment details</h1>
+            <div class="product1-email">
+                <p class="product-email-para">Email address</p>
+                <input type="text" placeholder="Enter your email" class="product1-email-input" id="product1-email">
+                <p id="product1-email-output" class="product1-active"></p>
+            </div>
+            <div class="product1-email">
+                <p class="product-email-para">Credit Card Number</p>
+                <input type="text" placeholder=" XXX XXX XXX XXX" class="product1-email-input" id="product1-card">
+                <p id="product1-card-output" class="product1-active"></p>
+            </div>
+            <div class="product1-ExpCvv">
+                <div class="product1-email1">
+                    <p class="product-email-para">Expiry Date</p>
+                    <input type="text" placeholder="mm / yy" class="product1-date-input" id="product1-Exp">
+                    <p class="product1-Exp-output product1-active1"></p>
+                </div>
+                <div class="product1-email1">
+                    <p class="product-email-para">CVV</p>
+                    <input type="text" placeholder="XXX" class="product1-date-input" id="product1-Cvv">
+                    <p class="product1-Cvv-output product1-active1"></p>
+                </div>
+            </div>
+            <div class="product1-price-para">
+                <p>total price with discount</p>
+                <p>$107</p>
+            </div>
+            <a href=".anchor-check"><button class="btn-shop product1-btn" id="checkout-btn">Checkout</button></a>
+        </form>
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-card">
+                    <div class="logo-bar footer-img">
+                        <img src="./images/lastlogo-removebg-preview.png" alt="logo">
+                        <button class="btn-sign">Sign-In</button>
+                    </div>
+                </div>
+                <div class="footer-card">
+
+                    <h4>Contact</h4>
+                    <h4>Address: <span>562 Wellington Road, Street 32, California</span></h4>
+                    <h4>Phone: <span> +01 2222 395 /(+91) 012345 6789</span></h4>
+                    <h4>Hours: <span>10:00-18:00, Mon-Sat</span></h4>
+                </div>
+                <div class="footer-card">
+                    <h4>About</h4>
+                    <a href="#">
+                        <p>About Us</p>
+                    </a>
+                    <a href="#">
+                        <p>Delivery Information</p>
+                    </a>
+                    <a href="#">
+                        <p>Privacy Policy</p>
+                    </a>
+                    <a href="#">
+                        <p>Terms & Condition</p>
+                    </a>
+                    <a href="#">
+                        <p>Contact</p>
+                    </a>
+                </div>
+                <div class="footer-card">
+                    <h4>My Account</h4>
+                    <a href="#">
+                        <p>Sign-in</p>
+                    </a>
+                    <a href="#">
+                        <p>View point</p>
+                    </a>
+                    <a href="#">
+                        <p>My Wishlist</p>
+                    </a>
+                    <a href="">
+                        <p>Track My Order</p>
+                    </a>
+                    <a href="">
+                        <p>Help</p>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-last">
+                <p> 🏐 Condition of uses Privacy Notice Your Ads Privacy Choices © 1996-2025, HAR-Store.com, Inc. or its
+                    affiliates</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+
+</html>
