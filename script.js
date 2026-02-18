@@ -179,3 +179,10 @@ function typeWriter() {
 // ✅ ensures it runs after <span> exists
 document.addEventListener("DOMContentLoaded", typeWriter);
 
+// // blury effect
+const blurBtn = document.querySelector(".blur-btn");
+const checkout = document.querySelector(".checkout-page")
+
+blurBtn.addEventListener("click", () => {
+  checkout.classList.remove("blur"); 
+})
