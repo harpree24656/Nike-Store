@@ -35,16 +35,20 @@ cross.addEventListener("click", () => {
 
 // for form validation
 document.addEventListener("DOMContentLoaded", () => {
-  let form = document.getElementById("form-contact");
+  let form1 = document.getElementById("form-contact");
+  if(!form1) return;
   let outputEmail = document.getElementById("output-email");
   let outputName = document.getElementById("output-name");
   let myName = document.getElementById("name");
   let email = document.getElementById("email");
+  let textbox = document.getElementById("textbox")
+  let outputbox = document.getElementById("output-textbox")
 
-  form.addEventListener("submit", function (e) {
+  form1.addEventListener("submit", async function (e) {
     e.preventDefault();
     let message1 = [];
     let message2 = [];
+    let message3 = [];
 
     if (email.value.trim() === "") {
       message2.push("Email is required");
@@ -56,19 +60,45 @@ document.addEventListener("DOMContentLoaded", () => {
       message1.push("Name should be more than 3 letters");
     }
 
+    if(textbox.value.trim().length < 7){
+      message3.push("Suggestion is uncomplete");
+    }
+
     outputEmail.textContent = message2.join(" ");
     outputName.textContent = message1.join(" ");
+    outputbox.textContent = message3.join(" ");
 
     if (message1.length === 0 && message2.length === 0) {
-      alert("Message Successfully Submit");
-      form.reset();
+      try{
+        const res = await fetch("http://localhost:8000/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username:myName.value,
+            sugemail:email.value,
+            messagebox:textbox.value
+          })
+        });
+        const data = await res.json();
+        console.log("server response is ", data);
+
+        alert("Message Successfully Submit");
+        form1.reset();
+      }
+      catch(error){
+        console.log("Server error:", error);
+      }
     }
+
   });
 });
 
 // for checkout form validation
 document.addEventListener("DOMContentLoaded", () => {
-  let form = document.getElementById("checkout-page");
+  let checkform = document.getElementById("checkout-page1");
+  if (!checkform) return;
   let outputEmail = document.getElementById("product1-email-output");
   let outputName = document.getElementById("product1-card-output");
   let outputExp = document.querySelector(".product1-Exp-output");
@@ -80,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let btn = document.getElementById("checkout-btn");
   let successBox = document.querySelector(".anchor-check");
 
-  form.addEventListener("submit", function (e) {
+  checkform.addEventListener("submit", async function (e) {
     e.preventDefault();
     let message1 = [];
     let message2 = [];
@@ -116,9 +146,38 @@ document.addEventListener("DOMContentLoaded", () => {
     outputExp.textContent = message3.join(" ");
     outputCvv.textContent = message4.join(" ");
 
+    // if (message1.length === 0 && message2.length === 0 && message3.length === 0 && message4.length === 0) {
+    //   successBox.classList.add("show");
+    //   form.reset();
+    // }
+
     if (message1.length === 0 && message2.length === 0 && message3.length === 0 && message4.length === 0) {
-      successBox.classList.add("show");
-      form.reset();
+
+      try {
+
+        const res = await fetch("http://localhost:8000/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: email.value,
+            card: myNum.value,
+            expDate: Expiry.value,
+            cvv: Cvv.value
+          })
+        });
+
+        const data = await res.json();
+        console.log("Server response:", data);
+
+        successBox.classList.add("show");
+        checkform.reset();
+
+      }
+      catch (error) {
+        console.log("Server error:", error);
+      }
     }
   });
 });
@@ -162,8 +221,10 @@ function typeWriter() {
   currentText = texts[count];
   letter = currentText.slice(0, ++index);
 
-  // ✅ this will now find your <span id="typewriter">
-  document.getElementById("typewriter").textContent = letter;
+  //  this will now find your <span id="typewriter">
+  const el = document.getElementById("typewriter");
+  if(!el) return;
+  el.textContent = letter;
 
   if (letter.length === currentText.length) {
     setTimeout(() => {
@@ -176,13 +237,15 @@ function typeWriter() {
   }
 }
 
-// ✅ ensures it runs after <span> exists
+// ensures it runs after <span> exists
 document.addEventListener("DOMContentLoaded", typeWriter);
 
 // // blury effect
 const blurBtn = document.querySelector(".blur-btn");
-const checkout = document.querySelector(".checkout-page")
+const checkout = document.querySelector(".checkout-page");
 
-blurBtn.addEventListener("click", () => {
-  checkout.classList.remove("blur"); 
-})
+if (blurBtn && checkout) {
+  blurBtn.addEventListener("click", () => {
+    checkout.classList.remove("blur");
+  });
+}

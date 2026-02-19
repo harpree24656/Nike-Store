@@ -1,0 +1,77 @@
+// backend using express.js and mongoDB
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
+
+// declaration
+const app = express()
+const PORT = 8000
+
+// using middleware
+app.use(cors())
+app.use(express.json())
+
+// connection
+mongoose.connect("mongodb://127.0.0.1:27017/userDB")
+    .then(() => console.log("MongoDB working properly"))
+    .catch(error => console.log(error))
+
+// creating a schema for payment method
+const userdetailSchema = new mongoose.Schema({
+    email: String,
+    card: String,
+    expDate: String,
+    cvv: String
+})
+
+// using model
+const userdetail = mongoose.model("userdetail", userdetailSchema);
+
+app.post("/checkout", async (req, res) => {
+  try {
+    console.log("Checkout Data:", req.body);
+    const { email, card, expDate, cvv } = req.body;
+    await userdetail.create({
+      email,
+      card,
+      expDate,
+      cvv
+    });
+    res.json({ message: "User Saved Successfully" });
+
+  } catch (error) {
+    console.log("Checkout Error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+// creating a schema for suggestion submission
+const suggestionSchema = new mongoose.Schema({
+    username: String,
+    sugemail: String,
+    messagebox: String
+})
+
+// creating model
+const sugMsg = mongoose.model("sugMsg", suggestionSchema);
+
+app.post("/submit", async (req, res) => {
+    try {
+        const { username, sugemail, messagebox } = req.body;
+        await sugMsg.create({
+            username, sugemail, messagebox
+        });
+        res.json({ message: "Submit data of Suggestion" });
+    }
+    catch (error) {
+        console.log("An error is shown which is ", error);
+        res.status(500).json({ error: "Server error" });
+    }
+
+})
+
+// listener
+app.listen(PORT, () => {
+    console.log(`Server is running on Port http://localhost:${PORT}`);
+})

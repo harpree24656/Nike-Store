@@ -1,0 +1,3 @@
+node_modules/
+backendApp/node_modules/
+.env
