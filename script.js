@@ -276,16 +276,12 @@ if (formSub) {
     } else if (!loginEmail.value.includes("@")) {
       message1.push("Email is invalid");
     }
-    else if (loginPass.value.trim() === "") {
+    
+    if (loginPass.value.trim() === "") {
       message2.push("Password is required");
     }
     else if (loginPass.value.trim().length < 8) {
       message2.push("Password must be at least 8 characters");
-    }
-    else{
-      successBox.addEventListener("click", () => {
-        window.location.href = "index.html";
-      })
     }
 
     outputEmail.textContent = message1.join(" ");
