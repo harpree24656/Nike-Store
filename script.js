@@ -22,21 +22,24 @@
 // for menu bar
 const optionsBar = document.querySelector(".options-bar");
 const menuBtn = document.querySelector(".menu");
+if (menuBtn) {
+  menuBtn.addEventListener("click", () => {
+    menuBtn.style.display = "none";
+    optionsBar.classList.remove("hidden");
+  })
+}
 const cross = document.querySelector(".cross");
-
-menuBtn.addEventListener("click", () => {
-  menuBtn.style.display = "none";
-  optionsBar.classList.remove("hidden");
-})
-cross.addEventListener("click", () => {
-  optionsBar.classList.add("hidden");
-  menuBtn.style.display = "flex";
-})
+if (cross) {
+  cross.addEventListener("click", () => {
+    optionsBar.classList.add("hidden");
+    menuBtn.style.display = "flex";
+  })
+}
 
 // for form validation
 document.addEventListener("DOMContentLoaded", () => {
   let form1 = document.getElementById("form-contact");
-  if(!form1) return;
+  if (!form1) return;
   let outputEmail = document.getElementById("output-email");
   let outputName = document.getElementById("output-name");
   let myName = document.getElementById("name");
@@ -60,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
       message1.push("Name should be more than 3 letters");
     }
 
-    if(textbox.value.trim().length < 7){
+    if (textbox.value.trim().length < 7) {
       message3.push("Suggestion is uncomplete");
     }
 
@@ -69,16 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
     outputbox.textContent = message3.join(" ");
 
     if (message1.length === 0 && message2.length === 0) {
-      try{
+      try {
         const res = await fetch("http://localhost:8000/submit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            username:myName.value,
-            sugemail:email.value,
-            messagebox:textbox.value
+            username: myName.value,
+            sugemail: email.value,
+            messagebox: textbox.value
           })
         });
         const data = await res.json();
@@ -87,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Message Successfully Submit");
         form1.reset();
       }
-      catch(error){
+      catch (error) {
         console.log("Server error:", error);
       }
     }
@@ -223,7 +226,7 @@ function typeWriter() {
 
   //  this will now find your <span id="typewriter">
   const el = document.getElementById("typewriter");
-  if(!el) return;
+  if (!el) return;
   el.textContent = letter;
 
   if (letter.length === currentText.length) {
@@ -247,5 +250,70 @@ const checkout = document.querySelector(".checkout-page");
 if (blurBtn && checkout) {
   blurBtn.addEventListener("click", () => {
     checkout.classList.remove("blur");
+  });
+}
+
+
+// login system
+const formSub = document.querySelector(".contanier-login");
+if (formSub) {
+
+  formSub.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const loginEmail = document.querySelector(".login-email");
+    const loginPass = document.querySelector(".login-password");
+    const outputEmail = document.querySelector(".output-email");
+    const outputPass = document.querySelector(".output-pass");
+    const successBox = document.querySelector(".login-btn");
+
+    let message1 = [];
+    let message2 = [];
+
+    if (loginEmail.value.trim() === "") {
+      message1.push("Email is required");
+    } else if (!loginEmail.value.includes("@")) {
+      message1.push("Email is invalid");
+    }
+    else if (loginPass.value.trim() === "") {
+      message2.push("Password is required");
+    }
+    else if (loginPass.value.trim().length < 8) {
+      message2.push("Password must be at least 8 characters");
+    }
+    else{
+      successBox.addEventListener("click", () => {
+        window.location.href = "index.html";
+      })
+    }
+
+    outputEmail.textContent = message1.join(" ");
+    outputPass.textContent = message2.join(" ");
+
+    if (message1.length === 0 && message2.length === 0) {
+      try {
+        const res = await fetch("http://localhost:8000/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: loginEmail.value,
+            password: loginPass.value
+          })
+        });
+        const data = await res.json();
+        console.log("Server response:", data);
+        if (res.ok) {
+          alert("Registration Successful");
+          window.location.href = "index.html";
+        } else {
+          alert(data.message || "Registration failed");
+        }
+      } catch (error) {
+        console.log("Server error:", error);
+      }
+    }
   });
 }

@@ -2,6 +2,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
+const bcrypt = require('bcryptjs');
 
 // declaration
 const app = express()
@@ -70,6 +71,31 @@ app.post("/submit", async (req, res) => {
     }
 
 })
+
+// 2. Define how a User looks (Schema)
+const UserSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+const User = mongoose.model('User', UserSchema);
+
+// 3. The "Register" Route
+app.post('/register', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Scramble the password (Hashing)
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Save to Database
+        const newUser = new User({ email, password: hashedPassword });
+        await newUser.save();
+
+        res.json({ message: "User saved successfully to MongoDB!" });
+    } catch (err) {
+        res.status(500).json({ message: "Error: Email might already exist." });
+    }
+});
 
 // listener
 app.listen(PORT, () => {
