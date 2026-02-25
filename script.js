@@ -266,7 +266,6 @@ if (formSub) {
     const loginPass = document.querySelector(".login-password");
     const outputEmail = document.querySelector(".output-email");
     const outputPass = document.querySelector(".output-pass");
-    const successBox = document.querySelector(".login-btn");
 
     let message1 = [];
     let message2 = [];
@@ -276,7 +275,6 @@ if (formSub) {
     } else if (!loginEmail.value.includes("@")) {
       message1.push("Email is invalid");
     }
-    
     if (loginPass.value.trim() === "") {
       message2.push("Password is required");
     }
@@ -288,6 +286,29 @@ if (formSub) {
     outputPass.textContent = message2.join(" ");
 
     if (message1.length === 0 && message2.length === 0) {
+      // try {
+      //   const res = await fetch("http://localhost:8000/register", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     },
+      //     body: JSON.stringify({
+      //       email: loginEmail.value,
+      //       password: loginPass.value
+      //     })
+      //   });
+      //   const data = await res.json();
+      //   console.log("Server response:", data);
+      //   if (res.ok) {
+      //     alert("Registration Successful");
+      //     window.location.href = "index.html";
+      //   } else {
+      //     alert(data.message || "Registration failed");
+      //   }
+      // } catch (error) {
+      //   console.log("Server error:", error);
+      // }
+
       try {
         const res = await fetch("http://localhost:8000/register", {
           method: "POST",
@@ -301,15 +322,22 @@ if (formSub) {
         });
         const data = await res.json();
         console.log("Server response:", data);
-        if (res.ok) {
-          alert("Registration Successful");
+        if(res.ok){
+          if(data.token){
+            localStorage.setItem("token", data.token);
+          }
+          if(data.userId){
+            localStorage.setItem("userId", data.userId);
+          }
           window.location.href = "index.html";
-        } else {
+        }
+        else {
           alert(data.message || "Registration failed");
         }
       } catch (error) {
         console.log("Server error:", error);
       }
+
     }
   });
 }
