@@ -3,10 +3,11 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 // declaration
 const app = express()
-const PORT = 8000
+const PORT = process.env.PORT
 
 // using middleware
 app.use(cors())
@@ -69,7 +70,6 @@ app.post("/submit", async (req, res) => {
         console.log("An error is shown which is ", error);
         res.status(500).json({ error: "Server error" });
     }
-
 })
 
 // 2. Define how a User looks (Schema)
@@ -79,7 +79,24 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
-// 3. The "Register" Route
+// // 3. The "Register" Route
+// app.post('/register', async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
+
+//         // Scramble the password (Hashing)
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         // Save to Database
+//         const newUser = new User({ email, password: hashedPassword });
+//         await newUser.save();
+//         res.json({ message: "User Registered Successfully" });
+
+//     } catch (err) {
+//         res.status(500).json({ message: "Error: Email might already exist." });
+//     }
+// });
+
 app.post('/register', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -91,11 +108,24 @@ app.post('/register', async (req, res) => {
         const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
 
-        res.json({ message: "User saved successfully to MongoDB!" });
+        // create JWT token 
+        const token = jwt.sign(
+            {
+                userId: newUser._id,
+                email:newUser.email
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+         )
+        res.json({ token, userId: newUser._id , email: newUser.email});
+        res.json({ message: "User Registered Successfully" });
     } catch (err) {
         res.status(500).json({ message: "Error: Email might already exist." });
     }
 });
+
 
 // listener
 app.listen(PORT, () => {
